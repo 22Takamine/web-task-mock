@@ -10,10 +10,10 @@ import util.DbUtil;
 
 public class ProductService {
 
-    public Product authentication() {
+    public List<Product> authentication(String name) {
         try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);
-            Product product = productDao.findAll();
+            List<Product> product = productDao.findByName(name);
 
             return product;
         } catch (Exception e) {
@@ -34,10 +34,10 @@ public class ProductService {
         return Collections.emptyList();
     }
     
-    public List<Product> findSerch(String id, int categoryId) {
+    public List<Product> findSerch(Integer categoryId) {
         try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);
-            return productDao.findByNameOrCategoryId(id, categoryId);
+            return productDao.findByCategoryId(categoryId);
         } catch (Exception e) {
             e.printStackTrace();
         }

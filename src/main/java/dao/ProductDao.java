@@ -12,7 +12,8 @@ import entity.Product;
 public class ProductDao {
 
     private static final String SQL_SELECT_ALL = "SELECT product_id, name, price, category_id FROM products ORDER BY product_id";
-    private static final String SQL_SELECT_WHERE_PRODUCT_ID_OR_CATEGORY_ID = "SELECT product_id, name, price, category_id FROM products WHERE name = ? OR category_id = ?";
+    private static final String SQL_SELECT_WHERE_CATEGORY_ID = "SELECT product_id, name, price, category_id FROM products WHERE category_id = ?";
+    private static final String SQL_SELECT_WHERE_PRODUCT_NAME = "SELECT product_id, name, price, category_id FROM products WHERE name LIKE ? ";
 //    private static final String SQL_INSERT = "INSERT INTO users (id, name, mail, pass) VALUES (?, ?, ?, ?)";
 //    private static final String SQL_UPDATE = "UPDATE users SET name = ?, mail = ?, pass = ? WHERE id = ?";
 //    private static final String SQL_DELETE = "DELETE FROM users WHERE id = ?";
@@ -40,12 +41,11 @@ public class ProductDao {
         return list;
     }
 
-    public List<Product> findByNameOrCategoryId(String name, int categoryId) {
+    public List<Product> findByCategoryId(Integer categoryId) {
     	List<Product> findList = new ArrayList<Product>();
     	
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_PRODUCT_ID_OR_CATEGORY_ID)) {
-            stmt.setString(1, name);
-            stmt.setInt(2, categoryId);
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_CATEGORY_ID)) {
+            stmt.setInt(1, categoryId);
             
             ResultSet rs = stmt.executeQuery();
 
@@ -58,6 +58,25 @@ public class ProductDao {
         }
 
         return findList;
+    }
+    
+    public List<Product> findByName(String name) {
+    	List<Product> findNameList = new ArrayList<Product>();
+    	
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_PRODUCT_NAME)) {
+            stmt.setString(1, "%" + name + "%");
+            
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+            	Product u = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("category_id"));
+                findNameList.add(u);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return findNameList;
     }
 
 //    public int insert(Product user) {
