@@ -30,24 +30,24 @@
     </div>
   
     <div class="form_body">
-      <p class="error">エラーメッセージ</p>
+      <p class="error">${msgProductId}</p>
   
-      <form action="menu.html" method="get">
+      <form action="insert" method="post">
         <fieldset class="label-130">
           <div>
             <label class="required">商品ID</label>
             <input type="text" name="loginId" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <span class="error">${msgId}</span>
           </div>
           <div>
             <label class="required">商品名</label>
             <input type="text" name="userName" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <span class="error">${msgName}</span>
           </div>
           <div>
             <label class="required">単価</label>
-            <input type="text" name="tel" class="base-text">
-            <span class="error">エラーメッセージ</span>
+            <input type="number" name="tel" class="base-text">
+            <span class="error">${msgTel}</span>
           </div>
           <div class="select_block">
             <label class="required">カテゴリ</label>
@@ -66,7 +66,7 @@
           <div>
             <label>画像</label>
             <input type="file" name="file">
-            <span class="error">エラーメッセージ</span>
+            <span class="error">${msgFile}</span>
           </div>
         </fieldset>
         <div class="btns">

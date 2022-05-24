@@ -10,19 +10,6 @@ import util.DbUtil;
 
 public class ProductService {
 
-    public List<Product> authentication(String name) {
-        try (Connection conn = DbUtil.getConnection()) {
-            ProductDao productDao = new ProductDao(conn);
-            List<Product> product = productDao.findByName(name);
-
-            return product;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public List<Product> find() {
         try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);
@@ -34,15 +21,27 @@ public class ProductService {
         return Collections.emptyList();
     }
     
-    public List<Product> findSerch(Integer categoryId) {
+    public List<Product> findSerch(String name) {
         try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);
-            return productDao.findByCategoryId(categoryId);
+            return productDao.findByName(name);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return Collections.emptyList();
+    }
+    
+    public int insert(Product product) {
+    	try (Connection conn = DbUtil.getConnection()) {
+            ProductDao productDao = new ProductDao(conn);
+            return productDao.insert(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    	
     }
 
 }

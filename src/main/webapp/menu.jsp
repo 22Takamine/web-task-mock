@@ -36,14 +36,14 @@
     <table>
         <div class="caption"><p>検索結果：${productList.size()}件</p></div>
         <div class="order">
-          <select class="base-text">
-            <option>並び替え</option>
-            <option>商品ID</option>
-            <option>カテゴリ</option>
-            <option>単価：安い順</option>
-            <option>単価：高い順</option>
-            <option>登録日：古い順</option>
-            <option>登録日：新しい順</option>
+          <select class="base-text" name="select">
+            <option value="">並び替え</option>
+            <option value="">商品ID</option>
+            <option value="">カテゴリ</option>
+            <option value="">単価：安い順</option>
+            <option value="">単価：高い順</option>
+            <option value="">登録日：古い順</option>
+            <option value="">登録日：新しい順</option>
           </select>
         </div>
       <thead>
@@ -61,7 +61,7 @@
 		            <td>${product.productId}</td>
 		            <td>${product.productName}</td>
 		            <td>${product.price}</td>
-		            <td>${product.categoryId}</td>
+		            <td>${product.categoryName}</td>
 		            <td><a class="detail_btn" href="./detail.jsp">詳細</a></td>
           		</tr>
           	</c:forEach>

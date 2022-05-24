@@ -10,15 +10,20 @@ public class Product {
 	private String imagePath;
 	private String description;
 	
+	private Integer categoriesId;
+	private String categoryName;
+	
+	
+	
 	public Product() {
 		
 	}
 
-	public Product(Integer productId, String productName, Integer price, Integer categoryId) {
+	public Product(Integer productId, String productName, Integer price, String categoryName) {
 	    this.productId = productId;
 	    this.productName = productName;
 	    this.price = price;
-	    this.categoryId = categoryId;
+	    this.categoryName = categoryName;
 	}
 	
 	public Product(Integer productId, String productName, Integer price, Integer categoryId, String imagePath, String description) {
@@ -85,6 +90,14 @@ public class Product {
 
 	public void setDescription(String description) {
 	    this.description = description;
+	}
+	
+	public String getCategoryName() {
+	    return this.categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+	    this.categoryName = categoryName;
 	}
 
 }

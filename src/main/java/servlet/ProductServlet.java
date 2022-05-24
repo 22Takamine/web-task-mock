@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,9 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entity.Categories;
 import entity.Product;
-import service.CategoriesService;
 import service.ProductService;
 import util.ParamUtil;
 
@@ -29,42 +26,20 @@ public class ProductServlet extends HttpServlet {
         String seachText = request.getParameter("seach");
      // ログインチェック
         ProductService productService = new ProductService();
-        CategoriesService categoriesService = new CategoriesService();
-        Categories category = categoriesService.authentication(seachText);
-        List<Product> product = new ArrayList<>();
-        List<Categories> categories;
+        List<Product> product = null;
         
-        if(category == null) {
-        	product = productService.authentication(seachText);
-        	
-        }else {
-        	categories = categoriesService.findId(seachText);
-        	
-        	for(int i = 0; i < categories.size(); i++) {
-        		category = categories.get(i);
-        		int categoryId = category.getId();
-//        		product = productService.findSerch(categoryId);
-        		product.addAll(productService.findSerch(categoryId));
-        		
-        		
-        	}
-//        	int categoryId = category.getId();
-//        	product = productService.findSerch(seachText,categoryId);
-        }
         
-
-        
-       
-        if (ParamUtil.isNullOrEmpty(seachText)) {
+         if (ParamUtil.isNullOrEmpty(seachText)) {
             // メッセージ設定
         	product = productService.find();
         	System.out.println("ALL検索");
         	request.setAttribute("productList",product);
-        	request.setAttribute("categoryList", category);
             // 次画面指定
             request.getRequestDispatcher("menu.jsp").forward(request, response);
             return;
             
+        }else {
+        	product = productService.findSerch(seachText);
         }
 
         
@@ -74,7 +49,6 @@ public class ProductServlet extends HttpServlet {
         if (product != null) {
         	System.out.println("検索");
         	session.setAttribute("productList", product);
-        	request.setAttribute("categoryList", category);
             // 次画面指定
             request.getRequestDispatcher("menu.jsp").forward(request, response);
         } else {

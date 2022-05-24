@@ -11,10 +11,9 @@ import entity.Product;
 
 public class ProductDao {
 
-    private static final String SQL_SELECT_ALL = "SELECT product_id, name, price, category_id FROM products ORDER BY product_id";
-    private static final String SQL_SELECT_WHERE_CATEGORY_ID = "SELECT product_id, name, price, category_id FROM products WHERE category_id = ?";
-    private static final String SQL_SELECT_WHERE_PRODUCT_NAME = "SELECT product_id, name, price, category_id FROM products WHERE name LIKE ? ";
-//    private static final String SQL_INSERT = "INSERT INTO users (id, name, mail, pass) VALUES (?, ?, ?, ?)";
+	private static final String SQL_SELECT_ALL = "SELECT p.product_id, p.name, p.price, c.c_name FROM products p INNER JOIN categories c ON p.category_id = c.id ORDER BY product_id";
+    private static final String SQL_SELECT_WHERE_NAME = "SELECT p.product_id, p.name, p.price, c.c_name FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE name LIKE ? OR c_name LIKE ? ORDER BY product_id";
+    private static final String SQL_INSERT = "INSERT INTO products (product_id, name, price, category_id, description, image_path, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, current_timestamp, current_timestamp)";
 //    private static final String SQL_UPDATE = "UPDATE users SET name = ?, mail = ?, pass = ? WHERE id = ?";
 //    private static final String SQL_DELETE = "DELETE FROM users WHERE id = ?";
 
@@ -31,7 +30,7 @@ public class ProductDao {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-            	Product u = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("category_id"));
+            	Product u = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("c_name"));
                 list.add(u);
             }
         } catch (SQLException e) {
@@ -41,16 +40,17 @@ public class ProductDao {
         return list;
     }
 
-    public List<Product> findByCategoryId(Integer categoryId) {
+    public List<Product> findByName(String name) {
     	List<Product> findList = new ArrayList<Product>();
     	
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_CATEGORY_ID)) {
-            stmt.setInt(1, categoryId);
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_NAME)) {
+            stmt.setString(1, "%" + name + "%");
+            stmt.setString(2, "%" + name + "%");
             
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-            	Product u = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("category_id"));
+            	Product u = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("c_name"));
                 findList.add(u);
             }
         } catch (SQLException e) {
@@ -60,24 +60,39 @@ public class ProductDao {
         return findList;
     }
     
-    public List<Product> findByName(String name) {
-    	List<Product> findNameList = new ArrayList<Product>();
-    	
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_PRODUCT_NAME)) {
-            stmt.setString(1, "%" + name + "%");
-            
-            ResultSet rs = stmt.executeQuery();
+    public int insert(Product product) {
+      try (PreparedStatement stmt = connection.prepareStatement(SQL_INSERT)) {
+          stmt.setInt(1, product.getProductId());
+          stmt.setString(2, product.getProductName());
+          stmt.setInt(3, product.getPrice());
+          stmt.setInt(4, product.getCategoryId());
+          stmt.setString(5, product.getDescription());
+          stmt.setString(6, product.getImagePath());
 
-            while (rs.next()) {
-            	Product u = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("category_id"));
-                findNameList.add(u);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return findNameList;
-    }
+          return stmt.executeUpdate();
+      } catch (SQLException e) {
+          throw new RuntimeException(e);
+      }
+  }
+    
+//    public List<Product> findByName(String name) {
+//    	List<Product> findNameList = new ArrayList<Product>();
+//    	
+//        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_WHERE_PRODUCT_NAME)) {
+//            stmt.setString(1, "%" + name + "%");
+//            
+//            ResultSet rs = stmt.executeQuery();
+//
+//            while (rs.next()) {
+//            	Product u = new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getString("c_name"));
+//                findNameList.add(u);
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return findNameList;
+//    }
 
 //    public int insert(Product user) {
 //        try (PreparedStatement stmt = connection.prepareStatement(SQL_INSERT)) {
