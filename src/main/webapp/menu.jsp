@@ -62,7 +62,7 @@
 		            <td>${product.productName}</td>
 		            <td>${product.price}</td>
 		            <td>${product.categoryName}</td>
-		            <td><a class="detail_btn" href="./detail.jsp">詳細</a></td>
+		            <td><a class="detail_btn" href="./Detail?productId=${product.productId}">詳細</a></td>
           		</tr>
           	</c:forEach>
       </tbody>
