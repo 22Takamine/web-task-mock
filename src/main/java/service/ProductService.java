@@ -21,6 +21,17 @@ public class ProductService {
         return Collections.emptyList();
     }
     
+    public Product findById(Integer productId) {
+        try (Connection conn = DbUtil.getConnection()) {
+            ProductDao productDao = new ProductDao(conn);
+            return productDao.findById(productId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
     public List<Product> findSerch(String name) {
         try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);

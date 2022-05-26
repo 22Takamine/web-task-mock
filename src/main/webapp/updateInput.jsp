@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,36 +27,42 @@
     <div class="form_body">
       <p class="error">エラーメッセージ</p>
 
-      <form action="menu.html" method="get">
+      <form action="update" method="get">
         <fieldset class="label-130">
           <div>
             <label>商品ID</label>
-            <input type="text" name="loginId" value="10001" class="base-text">
+            <input type="text" name="productId" value="${detailDate.productId}" class="base-text">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
             <label>商品名</label>
-            <input type="text" name="userName" value="マッキー(黒)" class="base-text">
+            <input type="text" name="productName" value="${detailDate.productName}" class="base-text">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
             <label>単価</label>
-            <input type="text" name="tel" value="165" class="base-text">
+            <input type="text" name="tel" value="${detailDate.price}" class="base-text">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
             <label>カテゴリ</label> <select name="roleId" class="base-text">
-              <option value="1" selected>ペン</option>
-              <option value="2">ノート</option>
-              <option value="3">消しゴム</option>
-              <option value="4">のり</option>
+              <c:forEach var="category" items="${categoryList}">
+                <c:if test="${detailDate.categoryId == category.id}" var="flg" />
+                
+                <c:if test="${flg}">
+             	  <option value="${category.id}" selected>${category.name}</option>
+                </c:if>
+                
+                <c:if test="${!flg}">
+             	  <option value="${category.id}" >${category.name}</option>
+                </c:if>
+	               
+              </c:forEach>
             </select>
           </div>
           <div>
             <label>商品説明</label>
-            <textarea name="description" class="base-text">
-ゼブラ株式会社
-線の太さ：太6.0mm、細1.5～2.0mm
+            <textarea name="description" class="base-text">${detailDate.description}
             </textarea>
           </div>
           <div>
@@ -65,7 +73,7 @@
         </fieldset>
           <div class="btns">
             <button type="button" onclick="openModal()" class="basic_btn">更新</button>
-            <input type="button" onclick="location.href='./menu.html'" value="メニューに戻る" class="cancel_btn">
+            <input type="button" onclick="location.href='./menu.jsp'" value="メニューに戻る" class="cancel_btn">
           </div>
           <div id="modal">
             <p class="modal_message">更新しますか？</p>

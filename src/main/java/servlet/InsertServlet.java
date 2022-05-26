@@ -30,6 +30,7 @@ public class InsertServlet extends HttpServlet {
         String description = request.getParameter("description");
         String file = request.getParameter("file");
         int productId = 0;
+        Integer cheakId = ParamUtil.checkAndParseInt(loginId);
         int price = 0;
         Integer categoryId = 0;
         int count = 0;
@@ -37,6 +38,9 @@ public class InsertServlet extends HttpServlet {
         // 入力値のチェック
         if (ParamUtil.isNullOrEmpty(loginId)) {
         	request.setAttribute("msgId", "商品IDは必須です");
+        	count = 1;
+        }else if(cheakId == null) {
+        	request.setAttribute("msgId", "商品IDは数値です");
         	count = 1;
         }else {
         	productId = Integer.valueOf(loginId);

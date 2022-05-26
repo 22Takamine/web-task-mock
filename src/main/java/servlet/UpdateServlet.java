@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +13,8 @@ import entity.Product;
 import service.ProductService;
 import util.ParamUtil;
 
-@WebServlet("/product")
-public class ProductServlet extends HttpServlet {
+@WebServlet("/update")
+public class UpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,10 +22,17 @@ public class ProductServlet extends HttpServlet {
     	// 文字化け対策
         request.setCharacterEncoding("UTF-8");
 
-        String seachText = request.getParameter("seach");
-     // ログインチェック
+        String productId = request.getParameter("productId");
+        String productName = request.getParameter("productName");
+        String tel = request.getParameter("tel");
+        String roleId = request.getParameter("roleId");
+        String description = request.getParameter("description");
+        String file = request.getParameter("file");
+        
+        int id = Integer.valueOf(productId);
+
         ProductService productService = new ProductService();
-        List<Product> product = null;
+        Product product = productService.findById(id);
         
         
          if (ParamUtil.isNullOrEmpty(seachText)) {

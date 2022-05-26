@@ -29,28 +29,26 @@
       </div>
       <form action="menu.html" method="get">
         <fieldset class="label-130 product_block">
-          <p class="error">エラーメッセージ</p>
+          <p class="error">${msgDetail}</p>
           <div>
             <label>商品ID</label>
-            <input type="text" name="loginId" value="10001" readonly class="base-text">
+            <input type="text" name="loginId" value="${detailDate.productId}" readonly class="base-text">
           </div>
           <div>
             <label>商品名</label>
-            <input type="text" name="userName" value="マッキー(黒)" readonly class="base-text">
+            <input type="text" name="userName" value="${detailDate.productName}" readonly class="base-text">
           </div>
           <div>
             <label>単価</label>
-            <input type="text" name="tel" value="165" readonly class="base-text">
+            <input type="text" name="tel" value="${detailDate.price}" readonly class="base-text">
           </div>
           <div>
             <label>カテゴリ</label>
-            <input type="text" name="roleName" value="ペン" readonly class="base-text">
+            <input type="text" name="roleName" value="${detailDate.categoryName}" readonly class="base-text">
           </div>
           <div>
             <label>商品説明</label>
-            <textarea name="description" readonly class="base-text" style="background-color: rgb(209, 209, 209);">
-ゼブラ株式会社
-線の太さ：太6.0mm、細1.5～2.0mm
+            <textarea name="description" readonly class="base-text" style="background-color: rgb(209, 209, 209);">${detailDate.description}
             </textarea>
           </div>
         </fieldset>

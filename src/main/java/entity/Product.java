@@ -10,7 +10,6 @@ public class Product {
 	private String imagePath;
 	private String description;
 	
-	private Integer categoriesId;
 	private String categoryName;
 	
 	
@@ -31,6 +30,16 @@ public class Product {
 	    this.productName = productName;
 	    this.price = price;
 	    this.categoryId = categoryId;
+	    this.imagePath = imagePath;
+	    this.description = description;
+	}
+	
+	public Product(Integer productId, String productName, Integer price, Integer categoryId, String categoryName, String imagePath, String description) {
+		this.productId = productId;
+	    this.productName = productName;
+	    this.price = price;
+	    this.categoryId = categoryId;
+	    this.categoryName = categoryName;
 	    this.imagePath = imagePath;
 	    this.description = description;
 	}

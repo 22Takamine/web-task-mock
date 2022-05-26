@@ -12,8 +12,9 @@ import entity.Product;
 public class ProductDao {
 
 	private static final String SQL_SELECT_ALL = "SELECT p.product_id, p.name, p.price, c.c_name FROM products p INNER JOIN categories c ON p.category_id = c.id ORDER BY product_id";
+	private static final String SQL_SELECT_ID = "SELECT * FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE product_id = ?";
     private static final String SQL_SELECT_WHERE_NAME = "SELECT p.product_id, p.name, p.price, c.c_name FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE name LIKE ? OR c_name LIKE ? ORDER BY product_id";
-    private static final String SQL_INSERT = "INSERT INTO products (product_id, name, price, category_id, description, image_path, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, current_timestamp, current_timestamp)";
+    private static final String SQL_INSERT = "INSERT INTO products (product_id, name, price, category_id, image_path, description, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, current_timestamp, current_timestamp)";
 //    private static final String SQL_UPDATE = "UPDATE users SET name = ?, mail = ?, pass = ? WHERE id = ?";
 //    private static final String SQL_DELETE = "DELETE FROM users WHERE id = ?";
 
@@ -38,6 +39,22 @@ public class ProductDao {
         }
 
         return list;
+    }
+    
+    public Product findById(Integer productId) {
+        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_ID)) {
+        	stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+            	return new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("category_id"), rs.getString("c_name"), rs.getString("image_path"), rs.getString("description"));
+            }else {
+            	return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public List<Product> findByName(String name) {

@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entity.Product;
 import entity.User;
+import service.ProductService;
 import service.UserService;
 import util.ParamUtil;
 
@@ -25,6 +28,8 @@ public class LoginServlet extends HttpServlet {
         // ログイン
         String loginId = request.getParameter("loginId");
         String pass = request.getParameter("pass");
+        ProductService productService = new ProductService();
+        List<Product> product = productService.find();;
 
         // 入力値のチェック
         if (ParamUtil.isNullOrEmpty(loginId) || ParamUtil.isNullOrEmpty(pass)) {
@@ -52,6 +57,7 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
         	
             // 次画面指定
+        	session.setAttribute("productList", product);
         	session.setAttribute("user", user);
             request.getRequestDispatcher("menu.jsp").forward(request, response);
         } else {
