@@ -30,7 +30,7 @@ public class DeleteServlet extends HttpServlet {
         
         List<Product> productAll = productService.findAll();
         session.setAttribute("productList", productAll);
-        
+        request.setAttribute("msg", "削除に成功しました");
         request.getRequestDispatcher("menu.jsp").forward(request, response);
         
         

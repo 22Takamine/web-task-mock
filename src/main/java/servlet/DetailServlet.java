@@ -41,7 +41,7 @@ public class DetailServlet extends HttpServlet {
         List<Category> category = categoryService.findAll();
         
         if(product == null) {
-        	request.setAttribute("msgDetail", "エラー");
+        	request.setAttribute("msg", "削除に失敗しました");
         }else {
         	session.setAttribute("categoryList", category);
         	session.setAttribute("detailDate", product);

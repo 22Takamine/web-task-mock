@@ -28,7 +28,7 @@
 	<c:if test="${authority}">
     <div class="btn"><a class="basic_btn regist" href="insert.jsp">新規登録</a></div>
     </c:if>
-    <p>成功メッセージ</p>
+    <p>${msg}</p>
     <form method="get" action="product">
       <div class="search_container">
 	      <input type="text" size="25" name="seach" placeholder="キーワード検索">

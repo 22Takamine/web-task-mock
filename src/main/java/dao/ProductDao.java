@@ -15,7 +15,7 @@ public class ProductDao {
 	private static final String SQL_SELECT_ID = "SELECT * FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE product_id = ?";
     private static final String SQL_SELECT_WHERE_NAME = "SELECT p.product_id, p.name, p.price, c.c_name FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE name LIKE ? OR c_name LIKE ? ORDER BY ";
     private static final String SQL_INSERT = "INSERT INTO products (product_id, name, price, category_id, image_path, description, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, current_timestamp, current_timestamp)";
-    private static final String SQL_UPDATE = "UPDATE products SET name = ?, price = ?, category_id = ?, image_path = ?, description = ?, updated_at = current_timestamp  WHERE product_id = ?";
+    private static final String SQL_UPDATE = "UPDATE products SET product_id = ?, name = ?, price = ?, category_id = ?, image_path = ?, description = ?, updated_at = current_timestamp  WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
 
     private Connection connection;
@@ -47,7 +47,7 @@ public class ProductDao {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-            	return new Product(rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("category_id"), rs.getString("c_name"), rs.getString("image_path"), rs.getString("description"));
+            	return new Product(rs.getInt("id"), rs.getInt("product_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("category_id"), rs.getString("c_name"), rs.getString("image_path"), rs.getString("description"));
             }else {
             	return null;
             }
@@ -94,12 +94,14 @@ public class ProductDao {
     
     public int update(Product product) {
       try (PreparedStatement stmt = connection.prepareStatement(SQL_UPDATE)) {
-    	  stmt.setString(1, product.getProductName());
-          stmt.setInt(2, product.getPrice());
-          stmt.setInt(3, product.getCategoryId());
-          stmt.setString(4, product.getImagePath());
-          stmt.setString(5, product.getDescription());
-          stmt.setInt(6, product.getProductId());
+    	  stmt.setInt(1, product.getProductId());
+    	  stmt.setString(2, product.getProductName());
+          stmt.setInt(3, product.getPrice());
+          stmt.setInt(4, product.getCategoryId());
+          stmt.setString(5, product.getImagePath());
+          stmt.setString(6, product.getDescription());
+          stmt.setInt(7, product.getId());
+          
 
           return stmt.executeUpdate();
       } catch (SQLException e) {

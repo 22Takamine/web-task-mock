@@ -21,19 +21,22 @@ public class UpdateServlet extends HttpServlet {
     	HttpSession session = request.getSession();
     	// 文字化け対策
         request.setCharacterEncoding("UTF-8");
-
+        Product oldProduct = (Product) session.getAttribute("detailDate");
+        int id = oldProduct.getId();
         String productId = request.getParameter("productId");
         String productName = request.getParameter("productName");
         String tel = request.getParameter("tel");
         String roleId = request.getParameter("roleId");
         String description = request.getParameter("description");
         String file = request.getParameter("file");
-        int id = 0;
+        int proId = 0;
         Integer cheakId = ParamUtil.checkAndParseInt(productId);
         int price = 0;
         Integer categoryId = 0;
         int count = 0;
         
+        ProductService productService = new ProductService();
+        proId = Integer.valueOf(productId);
     
      // 入力値のチェック
         if (ParamUtil.isNullOrEmpty(productId)) {
@@ -42,8 +45,9 @@ public class UpdateServlet extends HttpServlet {
         }else if(cheakId == null) {
         	request.setAttribute("msgId", "商品IDは数値です");
         	count = 1;
-        }else {
-        	id = Integer.valueOf(productId);
+        }else if(productService.findById(cheakId) != null && proId != oldProduct.getProductId()) {
+        	request.setAttribute("msgId", "商品IDが重複しています");
+        	count = 1;
         }
         
         if (ParamUtil.isNullOrEmpty(productName)) {
@@ -77,9 +81,9 @@ public class UpdateServlet extends HttpServlet {
         }
         
 
-        Product product = new Product(id, productName, price, categoryId,  file, description);
+        Product product = new Product(id, proId, productName, price, categoryId,  file, description);
         
-        ProductService productService = new ProductService();
+        
         int insert = productService.update(product);
         
         if(insert == 1) {
@@ -87,7 +91,7 @@ public class UpdateServlet extends HttpServlet {
         }else {
         	request.setAttribute("msgUpdate", "失敗しました");
         }
-        
+        session.setAttribute("msg","更新処理が完了しました");
         request.getRequestDispatcher("updateInput.jsp").forward(request, response);
     }
 

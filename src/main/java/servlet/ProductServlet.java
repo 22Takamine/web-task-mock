@@ -49,6 +49,9 @@ public class ProductServlet extends HttpServlet {
         if (product != null) {
         	System.out.println("検索");
         	session.setAttribute("productList", product);
+        	if(product.size() == 0) {
+        		request.setAttribute("msg", "見つかりません");
+        	}
             // 次画面指定
             request.getRequestDispatcher("menu.jsp").forward(request, response);
         } else {
