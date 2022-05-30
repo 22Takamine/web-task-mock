@@ -53,9 +53,9 @@
             <label class="required">カテゴリ</label>
             <select name="roleId" class="base-text">
               <option value="1">筆記具</option>
-              <option value="2">紙製品</option>
+              <option value="2">オフィス機器</option>
               <option value="3">事務消耗品</option>
-              <option value="4">オフィス機器</option>
+              <option value="4">紙製品</option>
               <option value="5">雑貨</option>
             </select>
           </div>

@@ -17,7 +17,7 @@ import util.ParamUtil;
 public class UpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	HttpSession session = request.getSession();
     	// 文字化け対策
         request.setCharacterEncoding("UTF-8");
@@ -28,42 +28,67 @@ public class UpdateServlet extends HttpServlet {
         String roleId = request.getParameter("roleId");
         String description = request.getParameter("description");
         String file = request.getParameter("file");
+        int id = 0;
+        Integer cheakId = ParamUtil.checkAndParseInt(productId);
+        int price = 0;
+        Integer categoryId = 0;
+        int count = 0;
         
-        int id = Integer.valueOf(productId);
-
-        ProductService productService = new ProductService();
-        Product product = productService.findById(id);
-        
-        
-         if (ParamUtil.isNullOrEmpty(seachText)) {
-            // メッセージ設定
-        	product = productService.find();
-        	System.out.println("ALL検索");
-        	session.setAttribute("productList",product);
-            // 次画面指定
-            request.getRequestDispatcher("menu.jsp").forward(request, response);
-            return;
-            
+    
+     // 入力値のチェック
+        if (ParamUtil.isNullOrEmpty(productId)) {
+        	request.setAttribute("msgId", "商品IDは必須です");
+        	count = 1;
+        }else if(cheakId == null) {
+        	request.setAttribute("msgId", "商品IDは数値です");
+        	count = 1;
         }else {
-        	product = productService.findSerch(seachText);
+        	id = Integer.valueOf(productId);
         }
-
         
-        
-
-        // 表示メッセージの受け渡し
-        if (product != null) {
-        	System.out.println("検索");
-        	session.setAttribute("productList", product);
-            // 次画面指定
-            request.getRequestDispatcher("menu.jsp").forward(request, response);
-        } else {
-            // メッセージ設定
-            request.setAttribute("msg", "IDまたはパスワードが不正です");
-
-            // 次画面指定
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (ParamUtil.isNullOrEmpty(productName)) {
+        	request.setAttribute("msgName", "商品名は必須です");
+        	count = 1;
         }
+        
+        if (ParamUtil.isNullOrEmpty(tel)) {
+        	request.setAttribute("msgTel", "単価は必須です");
+        	count = 1;
+        }else {
+        	price = Integer.valueOf(tel);
+        }
+        
+        if (ParamUtil.isNullOrEmpty(roleId)) {
+        	categoryId = null;
+        	
+        }else {
+        	categoryId = Integer.valueOf(roleId);
+        }
+        
+        if (ParamUtil.isNullOrEmpty(file)) {
+        	request.setAttribute("msgFile", "画像は必須です");
+        	//count = 1;
+        }
+        
+        if(count == 1) {
+        	request.getRequestDispatcher("updateInput.jsp").forward(request, response);
+            return;
+        	
+        }
+        
+
+        Product product = new Product(id, productName, price, categoryId,  file, description);
+        
+        ProductService productService = new ProductService();
+        int insert = productService.update(product);
+        
+        if(insert == 1) {
+        	request.setAttribute("msgUpdate", "成功しました");
+        }else {
+        	request.setAttribute("msgUpdate", "失敗しました");
+        }
+        
+        request.getRequestDispatcher("updateInput.jsp").forward(request, response);
     }
 
 }

@@ -9,11 +9,23 @@ import entity.Product;
 import util.DbUtil;
 
 public class ProductService {
-
-    public List<Product> find() {
+	
+	public List<Product> findAll() {
+		String select = "product_id";
         try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);
-            return productDao.findAll();
+            return productDao.findAll(select);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public List<Product> find(String select) {
+        try (Connection conn = DbUtil.getConnection()) {
+            ProductDao productDao = new ProductDao(conn);
+            return productDao.findAll(select);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,10 +44,10 @@ public class ProductService {
         return null;
     }
     
-    public List<Product> findSerch(String name) {
+    public List<Product> findSerch(String name, String select) {
         try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);
-            return productDao.findByName(name);
+            return productDao.findByName(name, select);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +59,30 @@ public class ProductService {
     	try (Connection conn = DbUtil.getConnection()) {
             ProductDao productDao = new ProductDao(conn);
             return productDao.insert(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    	
+    }
+    
+    public int update(Product product) {
+    	try (Connection conn = DbUtil.getConnection()) {
+            ProductDao productDao = new ProductDao(conn);
+            return productDao.update(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    	
+    }
+    
+    public int delete(int productId) {
+    	try (Connection conn = DbUtil.getConnection()) {
+            ProductDao productDao = new ProductDao(conn);
+            return productDao.delete(productId);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -25,48 +25,51 @@
     </div>
 
     <hr>
-
+	<c:if test="${authority}">
     <div class="btn"><a class="basic_btn regist" href="insert.jsp">新規登録</a></div>
+    </c:if>
     <p>成功メッセージ</p>
-    <form method="get" action="product" class="search_container">
-      <input type="text" size="25" name="seach" placeholder="キーワード検索">
-      <input type="submit" value="&#xf002">
+    <form method="get" action="product">
+      <div class="search_container">
+	      <input type="text" size="25" name="seach" placeholder="キーワード検索">
+	      <input type="submit" value="&#xf002">
+      </div>
+    
+	    <table>
+	        <div class="caption"><p>検索結果：${productList.size()}件</p></div>
+	        <div class="order">
+	          <select class="base-text" name="select">
+	            <option value="product_id">並び替え</option>
+	            <option value="product_id">商品ID</option>
+	            <option value="category_id">カテゴリ</option>
+	            <option value="price ASC">単価：安い順</option>
+	            <option value="price DESC">単価：高い順</option>
+	            <option value="updated_at ASC">登録日：古い順</option>
+	            <option value="updated_at DESC">登録日：新しい順</option>
+	          </select>
+	        </div>
+	      <thead>
+	        <tr>
+	          <th>商品ID</th>
+	          <th>商品名</th>
+	          <th>単価</th>
+	          <th>カテゴリ</th>
+	          <th>詳細</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        	<c:forEach var="product" items="${productList}">
+	          		<tr>
+			            <td>${product.productId}</td>
+			            <td>${product.productName}</td>
+			            <td>${product.price}</td>
+			            <td>${product.categoryName}</td>
+			            <td><a class="detail_btn" href="./Detail?productId=${product.productId}">詳細</a></td>
+	          		</tr>
+	          	</c:forEach>
+	      </tbody>
+	    </table>
     </form>
-
-    <table>
-        <div class="caption"><p>検索結果：${productList.size()}件</p></div>
-        <div class="order">
-          <select class="base-text" name="select">
-            <option value="">並び替え</option>
-            <option value="">商品ID</option>
-            <option value="">カテゴリ</option>
-            <option value="">単価：安い順</option>
-            <option value="">単価：高い順</option>
-            <option value="">登録日：古い順</option>
-            <option value="">登録日：新しい順</option>
-          </select>
-        </div>
-      <thead>
-        <tr>
-          <th>商品ID</th>
-          <th>商品名</th>
-          <th>単価</th>
-          <th>カテゴリ</th>
-          <th>詳細</th>
-        </tr>
-      </thead>
-      <tbody>
-        	<c:forEach var="product" items="${productList}">
-          		<tr>
-		            <td>${product.productId}</td>
-		            <td>${product.productName}</td>
-		            <td>${product.price}</td>
-		            <td>${product.categoryName}</td>
-		            <td><a class="detail_btn" href="./Detail?productId=${product.productId}">詳細</a></td>
-          		</tr>
-          	</c:forEach>
-      </tbody>
-    </table>
   </div>
   <footer></footer>
 

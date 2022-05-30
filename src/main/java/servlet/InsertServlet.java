@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -76,7 +77,7 @@ public class InsertServlet extends HttpServlet {
         	
         }
         
-        Product product = new Product(productId, userName, price, categoryId, description, file);
+        Product product = new Product(productId, userName, price, categoryId,  file, description);
         
         ProductService productService = new ProductService();
         int insert = productService.insert(product);
@@ -87,6 +88,8 @@ public class InsertServlet extends HttpServlet {
         	request.setAttribute("msgProductId", "商品IDが重複しています");
         }
         
+        List<Product> productAll = productService.findAll();
+        session.setAttribute("productList", productAll);
         request.getRequestDispatcher("insert.jsp").forward(request, response);
         
         

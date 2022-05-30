@@ -24,6 +24,8 @@ public class ProductServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         String seachText = request.getParameter("seach");
+        String select = request.getParameter("select");
+        
      // ログインチェック
         ProductService productService = new ProductService();
         List<Product> product = null;
@@ -31,7 +33,7 @@ public class ProductServlet extends HttpServlet {
         
          if (ParamUtil.isNullOrEmpty(seachText)) {
             // メッセージ設定
-        	product = productService.find();
+        	product = productService.find(select);
         	System.out.println("ALL検索");
         	session.setAttribute("productList",product);
             // 次画面指定
@@ -39,12 +41,10 @@ public class ProductServlet extends HttpServlet {
             return;
             
         }else {
-        	product = productService.findSerch(seachText);
+        	product = productService.findSerch(seachText,select);
         }
-
         
-        
-
+         
         // 表示メッセージの受け渡し
         if (product != null) {
         	System.out.println("検索");

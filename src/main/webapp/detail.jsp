@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +29,7 @@
       <div class="img_block">
         <img src="images/マッキー.png" class="product_img"><br>
       </div>
-      <form action="menu.html" method="get">
+      <form action="delete" method="get">
         <fieldset class="label-130 product_block">
           <p class="error">${msgDetail}</p>
           <div>
@@ -54,8 +56,10 @@
         </fieldset>
         <div>
           <div class="btns">
-            <input type="button" onclick="openModal()" value="削除" class="basic_btn">
-            <input type="button" onclick="location.href='./updateInput.jsp'" value="編集" class="basic_btn">
+          	<c:if test="${authority}">
+	            <input type="button" onclick="openModal()" value="削除" class="basic_btn">
+	            <input type="button" onclick="location.href='./updateInput.jsp'" value="編集" class="basic_btn">
+	        </c:if>
             <input type="button" onclick="location.href='./menu.jsp'" value="戻る" class="cancel_btn">
           </div>
           <div id="modal">

@@ -28,8 +28,9 @@ public class LoginServlet extends HttpServlet {
         // ログイン
         String loginId = request.getParameter("loginId");
         String pass = request.getParameter("pass");
+        boolean authority = false;
         ProductService productService = new ProductService();
-        List<Product> product = productService.find();;
+        List<Product> product = productService.findAll();
 
         // 入力値のチェック
         if (ParamUtil.isNullOrEmpty(loginId) || ParamUtil.isNullOrEmpty(pass)) {
@@ -51,14 +52,17 @@ public class LoginServlet extends HttpServlet {
         // ログインチェック
         UserService userService = new UserService();
         User user = userService.authentication(loginId,pass);
-        
 
         // 表示メッセージの受け渡し
         if (user != null) {
+        	if(user.getRole() == 1) {
+        		authority = true;
+        	}
         	
             // 次画面指定
         	session.setAttribute("productList", product);
         	session.setAttribute("user", user);
+        	session.setAttribute("authority",authority);
             request.getRequestDispatcher("menu.jsp").forward(request, response);
         } else {
             // メッセージ設定
